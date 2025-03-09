@@ -9,7 +9,7 @@ import ResumeUpload from './pages/ResumeUpload';
 import Admindashboard from './components/AdminDashboard/Admindashboard';
 import Landingpage from './components/landingpages/Landingpage';
 import PostJob from './pages/PostJob';
-import InterviewMaker from './pages/interviewmaker';
+import InterviewMaker from './pages/InterviewMaker';
 import AppliedJobs from './pages/AppliedJobs';
 import Offers from './pages/Offers';
 
