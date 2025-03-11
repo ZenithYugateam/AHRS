@@ -1,77 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
-import { Home, Package, Mic, UserCircle, Menu, Search, ChevronUp, ChevronDown } from 'lucide-react';
+import { Search, ChevronUp, ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Header } from '../components/HeaderCompany/Header';  // Import the Header component
 
-// Navbar Component
-function Navbar() {
-  const navigate = useNavigate();
-  const [userName, setUserName] = useState<string | null>(null);
-
-  // Retrieve username from session storage
-  useEffect(() => {
-    const userData = sessionStorage.getItem("user");
-    if (userData) {
-      try {
-        const parsedUser = JSON.parse(userData);
-        // Use the 'name' property if available, otherwise fallback to email.
-        setUserName(parsedUser.name || parsedUser.email);
-      } catch (error) {
-        console.error("Error parsing user data from session storage:", error);
-      }
-    }
-  }, []);
-
-  return (
-    <nav className="bg-[#0a0a0a] border-b border-gray-800 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <span className="text-xl font-bold text-white">Dashboard</span>
-            <span className="ml-4 text-purple-500 flex items-center">
-              Hi, <span className="ml-1 animate-wave">👋</span>{userName?.trimEnd()}
-            </span>
-          </div>
-
-          <div className="hidden md:flex items-center space-x-8">
-            {/* Wrap Home link with Link component to navigate to /Company-dashboard */}
-            <Link to="/Company-dashboard">
-              <NavLink icon={<Home size={20} />} text="Home" active />
-            </Link>
-            <NavLink icon={<Package size={20} />} text="Packages" />
-            <NavLink icon={<Mic size={20} />} text="Interview Maker" />
-            <NavLink icon={<UserCircle size={20} />} text="Profile" />
-            <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition-colors duration-200 flex items-center space-x-2">
-              <span>Manage Subscription</span>
-            </button>
-          </div>
-
-          <div className="md:hidden">
-            <button className="text-gray-400 hover:text-white">
-              <Menu size={24} />
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
-}
-
-function NavLink({ icon, text, active = false }: { icon: React.ReactNode; text: string; active?: boolean }) {
-  return (
-    <a
-      href="#"
-      className={`flex items-center space-x-2 transition-colors duration-200 ${
-        active ? 'text-purple-500' : 'text-gray-300 hover:text-white'
-      }`}
-    >
-      {icon}
-      <span>{text}</span>
-    </a>
-  );
-}
-
-// CandidateDetailsPage Component with API integration, sorting, filtering, and custom status rendering
 interface CandidateRow {
   candidateId: string;
   jobId: number;
@@ -81,21 +13,24 @@ interface CandidateRow {
 }
 
 const CandidateDetailsPage = () => {
+  const navigate = useNavigate();
   const [candidates, setCandidates] = useState<CandidateRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [companyId, setCompanyId] = useState<string | null>(null);
   const [sortField, setSortField] = useState<keyof CandidateRow>('postedOn');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [searchTerm, setSearchTerm] = useState('');
+  const [userName, setUserName] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState<string>('total-interview'); // Track current page
 
-  // Retrieve company id dynamically from session storage
+  // Retrieve company id and userName dynamically from session storage
   useEffect(() => {
     const userData = sessionStorage.getItem("user");
     if (userData) {
       try {
         const parsedUser = JSON.parse(userData);
-        // Assuming the email is used as the company id
         setCompanyId(parsedUser.email);
+        setUserName(parsedUser.name || parsedUser.email);
       } catch (error) {
         console.error("Error parsing user data from session storage:", error);
       }
@@ -113,7 +48,6 @@ const CandidateDetailsPage = () => {
       .then((response) => {
         const jobs = response.data.jobs || [];
         const candidateRows: CandidateRow[] = [];
-        // Loop through each job and then each candidate in candidateList
         jobs.forEach((job: any) => {
           if (job.candidateList && Array.isArray(job.candidateList)) {
             job.candidateList.forEach((candidate: any) => {
@@ -147,42 +81,49 @@ const CandidateDetailsPage = () => {
     }
   };
 
-  const sortedCandidates = [...candidates].sort((a, b) => {
-    if (sortDirection === 'asc') {
-      return a[sortField] > b[sortField] ? 1 : -1;
+  // **Updated navigateTo function**
+  const navigateTo = (page: string) => {
+    setCurrentPage(page);
+    if (page === 'home') {
+      navigate('/Company-dashboard');  // Navigate to the dashboard
+    } else {
+      navigate(`/${page}`);
     }
-    return a[sortField] < b[sortField] ? 1 : -1;
-  });
+  };
 
-  const filteredCandidates = sortedCandidates.filter(candidate =>
-    Object.values(candidate).some(value =>
-      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  const openInterviewMaker = () => {
+    setCurrentPage('interview-maker');
+    navigate('/interview-maker');
+  };
 
-  // Map status to a color and label (customize as needed)
+  // Map status to a color and label
   const getStatusColor = (status: number) => {
-    if (status === 5) return 'bg-red-500';
-    if (status === 10) return 'bg-green-500';
     const statusMap: Record<number, string> = {
+      10: 'bg-green-500',
+      5: 'bg-red-500',
       4: 'bg-yellow-500',
       3: 'bg-red-500',
       2: 'bg-blue-500',
-      1: 'bg-gray-500'
+      1: 'bg-gray-500',
     };
     return statusMap[status] || 'bg-gray-500';
   };
 
   const getStatusLabel = (status: number) => {
-    if (status === 5) return 'Reject';
+    if (status === 5) return 'Rejected';
     if (status === 10) return 'Selected';
     return status.toString();
   };
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Navbar at the top */}
-      <Navbar />
+      {/* Use Header instead of Navbar */}
+      <Header
+        userName={userName || "NithinCompany"}
+        currentPage={currentPage}  // Pass the current page state
+        navigateTo={navigateTo}
+        openInterviewMaker={openInterviewMaker}
+      />
 
       <main className="max-w-7xl mx-auto p-6">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
@@ -200,7 +141,6 @@ const CandidateDetailsPage = () => {
         </div>
 
         {isLoading ? (
-          // Shadow loading animation for loading jobs
           <div className="animate-pulse p-6">
             <div className="h-6 bg-gray-700 rounded mb-4 w-1/3"></div>
             <div className="space-y-4">
@@ -223,22 +163,8 @@ const CandidateDetailsPage = () => {
                       <div className="flex items-center space-x-2">
                         <span>{key}</span>
                         <div className="flex flex-col">
-                          <ChevronUp
-                            size={14}
-                            className={`${
-                              sortField === key && sortDirection === 'asc'
-                                ? 'text-purple-500'
-                                : 'text-gray-600'
-                            }`}
-                          />
-                          <ChevronDown
-                            size={14}
-                            className={`${
-                              sortField === key && sortDirection === 'desc'
-                                ? 'text-purple-500'
-                                : 'text-gray-600'
-                            }`}
-                          />
+                          <ChevronUp size={14} className={sortField === key && sortDirection === 'asc' ? 'text-purple-500' : 'text-gray-600'} />
+                          <ChevronDown size={14} className={sortField === key && sortDirection === 'desc' ? 'text-purple-500' : 'text-gray-600'} />
                         </div>
                       </div>
                     </th>
@@ -246,13 +172,13 @@ const CandidateDetailsPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800">
-                {filteredCandidates.length > 0 ? (
-                  filteredCandidates.map((candidate, index) => (
+                {candidates.length > 0 ? (
+                  candidates.map((candidate, index) => (
                     <tr key={index} className="hover:bg-[#2a2a2a] transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">{candidate.candidateId}</td>
                       <td className="px-6 py-4 whitespace-nowrap">{candidate.jobId}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(candidate.status)} bg-opacity-20 border border-opacity-20`}>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(candidate.status)}`}>
                           {getStatusLabel(candidate.status)}
                         </span>
                       </td>
@@ -262,9 +188,7 @@ const CandidateDetailsPage = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={5} className="text-center px-6 py-4">
-                      No candidates found.
-                    </td>
+                    <td colSpan={5} className="text-center px-6 py-4">No candidates found.</td>
                   </tr>
                 )}
               </tbody>
