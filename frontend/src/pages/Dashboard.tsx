@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import {
   Package,
   User,
@@ -21,6 +22,8 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 import PaymentModal from '../components/StripePayment';
+//Header
+import { Header } from '../components/HeaderCompany/Header';
 
 // Custom ChevronUp and ChevronDown components
 const ChevronUp = ({ size = 24, ...props }: { size?: number }) => (
@@ -519,55 +522,12 @@ function Dashboard() {
       />
 
       {/* Header */}
-      <header className="flex items-center justify-between p-4 border-b border-gray-800">
-        <div className="flex items-center space-x-2">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
-        </div>
-        <div className="text-lg font-medium">
-          {userName ? `Hi, ${userName} 👋` : "Hi, User! 👋"}
-        </div>
-        <nav className="hidden md:flex items-center space-x-6">
-          <a
-            href="#"
-            className={`flex items-center space-x-2 ${currentPage === 'home' ? 'text-purple-400' : 'hover:text-purple-400'}`}
-            onClick={() => navigateTo('home')}
-          >
-            <Home size={20} />
-            <span>Home</span>
-          </a>
-          <a 
-            href="#"
-            className={`flex items-center space-x-2 ${currentPage === 'packages' ? 'text-purple-400' : 'hover:text-purple-400'}`}
-            onClick={() => navigateTo('packages')}
-          >
-            <Package size={20} />
-            <span>Packages</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center space-x-2 hover:text-purple-400"
-            onClick={openInterviewMaker}
-          >
-            <Mic size={20} />
-            <span>Interview Maker</span>
-          </a>
-          <a href="#" className="flex items-center space-x-2 hover:text-purple-400">
-            <User size={20} />
-            <span>Profile</span>
-          </a>
-        </nav>
-        <div className="flex items-center space-x-4">
-          <button 
-            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md"
-            onClick={() => navigateTo('packages')}
-          >
-            Manage Subscription
-          </button>
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center">
-            <span className="font-bold">Z</span>
-          </div>
-        </div>
-      </header>
+      <Header
+        userName={userName || undefined}
+        currentPage={currentPage}
+        navigateTo={navigateTo}
+        openInterviewMaker={openInterviewMaker}
+      />
 
       {/* Main Content */}
       <main className="p-6">
