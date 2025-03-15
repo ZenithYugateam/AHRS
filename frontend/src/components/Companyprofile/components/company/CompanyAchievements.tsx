@@ -31,7 +31,7 @@ const CompanyAchievements: React.FC<CompanyAchievementsProps> = ({
       <div className={`${cardStyles} p-4`}>
         <label className="block text-sm font-medium mb-2 text-gray-200">Notable Achievements/Awards</label>
         <div className="flex flex-wrap gap-2 mb-2">
-          {formData.companyProfile.achievements.map((achievement, index) => (
+          {formData.companyProfile.achievements.map((achievement: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, index: React.Key | null | undefined) => (
             <span key={index} className={tagStyles}>
               {achievement}
               {isEditing && (

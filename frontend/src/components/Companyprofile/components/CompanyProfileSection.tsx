@@ -149,7 +149,7 @@ const CompanyProfileSection: React.FC<CompanyProfileSectionProps> = ({
         <div className="p-4 border border-primary/30 rounded-lg bg-header/80 backdrop-blur-sm shadow-md">
           <label className="block text-sm font-medium mb-1">Office Locations</label>
           <div className="flex flex-wrap gap-2 mb-2">
-            {formData.companyProfile.officeLocations.map((location, index) => (
+            {formData.companyProfile.officeLocations.map((location: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, index: React.Key | null | undefined) => (
               <span
                 key={index}
                 className="bg-secondary/30 border border-secondary/50 px-3 py-1 rounded-full text-sm flex items-center"
@@ -227,7 +227,7 @@ const CompanyProfileSection: React.FC<CompanyProfileSectionProps> = ({
         <div className="p-4 border border-primary/30 rounded-lg bg-header/80 backdrop-blur-sm shadow-md">
           <label className="block text-sm font-medium mb-1">Products/Services Offered *</label>
           <div className="flex flex-wrap gap-2 mb-2">
-            {formData.companyProfile.products.map((product, index) => (
+            {formData.companyProfile.products.map((product: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, index: React.Key | null | undefined) => (
               <span
                 key={index}
                 className="bg-secondary/30 border border-secondary/50 px-3 py-1 rounded-full text-sm flex items-center"
@@ -286,7 +286,7 @@ const CompanyProfileSection: React.FC<CompanyProfileSectionProps> = ({
       <div className="p-4 border border-primary/30 rounded-lg bg-header/80 backdrop-blur-sm shadow-md">
         <label className="block text-sm font-medium mb-1">Key Competitors</label>
         <div className="flex flex-wrap gap-2 mb-2">
-          {formData.companyProfile.competitors.map((competitor, index) => (
+          {formData.companyProfile.competitors.map((competitor: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, index: React.Key | null | undefined) => (
             <span
               key={index}
               className="bg-secondary/30 border border-secondary/50 px-3 py-1 rounded-full text-sm flex items-center"
@@ -382,7 +382,7 @@ const CompanyProfileSection: React.FC<CompanyProfileSectionProps> = ({
           Notable Achievements/Awards
         </label>
         <div className="flex flex-wrap gap-2 mb-2">
-          {formData.companyProfile.achievements.map((achievement, index) => (
+          {formData.companyProfile.achievements.map((achievement: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, index: React.Key | null | undefined) => (
             <span
               key={index}
               className="bg-secondary/30 border border-secondary/50 px-3 py-1 rounded-full text-sm flex items-center"
@@ -485,7 +485,7 @@ const CompanyProfileSection: React.FC<CompanyProfileSectionProps> = ({
       <div className="p-4 border border-primary/30 rounded-lg bg-header/80 backdrop-blur-sm shadow-md">
         <label className="block text-sm font-medium mb-1">Corporate Social Responsibility Initiatives</label>
         <div className="flex flex-wrap gap-2 mb-2">
-          {formData.companyProfile.csrInitiatives.map((initiative, index) => (
+          {formData.companyProfile.csrInitiatives.map((initiative: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, index: React.Key | null | undefined) => (
             <span
               key={index}
               className="bg-secondary/30 border border-secondary/50 px-3 py-1 rounded-full text-sm flex items-center"
