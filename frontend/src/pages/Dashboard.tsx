@@ -1080,7 +1080,7 @@ function Dashboard() {
                                     ? "bg-green-600"
                                     : "bg-red-600"
                                 }`}
-                              >
+                              > 
                                 {jobStatuses[job.job_id] === "active" ? (
                                   <>
                                     <ToggleRight size={18} className="mr-1" />{" "}
