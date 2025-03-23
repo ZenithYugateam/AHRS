@@ -715,7 +715,7 @@ function Dashboard() {
               <span className="font-bold">Z</span>
             </div>
             <button
-              className="text-gray-400 hover:text-red-500 cursor-pointer"
+              className="text-gray-400 hover:text-red-500 text-white px-4 py-2 rounded-md cursor-pointer"
               onClick={handleLogout}
               title="Logout"
             >
@@ -748,8 +748,8 @@ function Dashboard() {
                           {totalInterviews} Applications
                         </p>
                         <button
-                          className="text-white hover:underline"
-                          onClick={() => navigate("/total-interview")}
+                          className="bg-white text-purple-600 hover:bg-gray-100 px-4 py-2 rounded-md text-sm font-medium"
+                          onClick={() => navigateTo("interview-maker")}
                         >
                           View Details
                         </button>
@@ -767,7 +767,10 @@ function Dashboard() {
                         <p className="text-sm mb-4">
                           {totalParticipants} Applications
                         </p>
-                        <button className="text-white hover:underline">
+                        <button
+                          className="bg-white text-blue-600 hover:bg-gray-100 px-4 py-2 rounded-md text-sm font-medium"
+                          onClick={() => navigate("/total-interview")}
+                        >
                           View Details
                         </button>
                       </div>
@@ -784,7 +787,10 @@ function Dashboard() {
                         <p className="text-sm mb-4">
                           {totalQualified} Applications
                         </p>
-                        <button className="text-white hover:underline">
+                        <button
+                          className="bg-white text-red-600 hover:bg-gray-100 px-4 py-2 rounded-md text-sm font-medium"
+                          onClick={() => navigate("/total-interview")}
+                        >
                           View Details
                         </button>
                       </div>
@@ -1108,21 +1114,22 @@ function Dashboard() {
                             {job.description || "No description available."}
                           </p>
 
-                          <div className="flex flex-wrap gap-2 mb-4">
+                          {/* Updated Attributes Section with Fixed Spacing */}
+                          <div className="grid grid-cols-3 gap-2 mb-4">
                             {job.experience && (
-                              <span className="bg-gray-700 text-sm px-3 py-1 rounded-full">
+                              <span className="bg-gray-700 text-sm px-3 py-1 rounded-full text-center truncate">
                                 {job.experience}
                               </span>
                             )}
                             {job.location && (
-                              <div className="flex items-center bg-gray-700 text-sm px-3 py-1 rounded-full">
-                                <MapPin size={14} className="mr-1" />
+                              <div className="bg-gray-700 text-sm px-3 py-1 rounded-full flex items-center justify-center truncate">
+                                <MapPin size={14} className="mr-1 flex-shrink-0" />
                                 <span>{job.location}</span>
                               </div>
                             )}
                             {job.salary && (
-                              <div className="flex items-center bg-gray-700 text-sm px-3 py-1 rounded-full">
-                                <DollarSign size={14} className="mr-1" />
+                              <div className="bg-gray-700 text-sm px-3 py-1 rounded-full flex items-center justify-center truncate">
+                                <DollarSign size={14} className="mr-1 flex-shrink-0" />
                                 <span>{job.salary}</span>
                               </div>
                             )}
@@ -1280,4 +1287,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
